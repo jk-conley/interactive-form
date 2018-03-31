@@ -9,9 +9,6 @@ const selectJobRole = document.getElementById('title');
 const selectShirtDesign = document.getElementById('design');
 const textArea = document.getElementById('other-title');
 
-// Elements created with js
-
-
 /*======================
 *** ONLOAD FUNCTIONS ***
 ======================*/
@@ -28,13 +25,13 @@ const focusOnNameField = () => {
 *** JOB ROLE FUNCTIONS ***
 ===================================================*/
 
-/*============================
-JOB ROLE OPTION FUNCTION
-============================*/
+/*=========================================
+CHECK WHICH JOB ROLE OPTION IS SELECTED
+=========================================*/
 
 const jobRoleOptionSelected = (option) => {
 
-  // check to see if other is selcted or not
+  // check if other option is selected
   if (option === 'other') {
     textArea.style.display = '';
   } else if (option !== 'other') {
@@ -133,10 +130,9 @@ const displayColorsBasedOnDesign = (designOption) => {
 
 }
 
-/*===================================================
-*** REGISTER ACTIVITIES FUNCTIONS ***
-===================================================*/
-
+/*===============================================
+*** REGISTER ACTIVITY FUNCTIONS ***
+===============================================*/
 
 
 
@@ -149,7 +145,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
   // Focus on name field onload
   focusOnNameField();
 
-  // hide textarea
+  // hide other job role textarea
   textArea.style.display = 'none';
 
   // Create textarea if option other is selected
