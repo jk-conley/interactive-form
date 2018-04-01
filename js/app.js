@@ -3,7 +3,7 @@ VARIABLES
 ================*/
 
 // focus variables
-const nameField = document.getElementById('name');
+const name = document.getElementById('name');
 
 // job role variables
 const selectJobRole = document.getElementById('title');
@@ -19,7 +19,7 @@ const activities = document.querySelectorAll('.activities > label');
 const activityFieldSet = document.querySelector('.activities');
 const divTotal = document.createElement('div');
 const h3 = document.createElement('h3');
-const totalCostDiv = document.querySelector('.activities > div');
+const totalCostDiv = document.querySelector('#total-cost');
 const jsFrameworks = document.querySelector('.activities > label > input[name="js-frameworks"]');
 const express = document.querySelector('.activities > label > input[name="express"]');
 const jsLibs = document.querySelector('.activities > label> input[name="js-libs"]');
@@ -33,7 +33,6 @@ const paymentOption = document.getElementById('payment');
 
 // validation variables
 const form = document.querySelector('form');
-const name = document.getElementById('name');
 const email = document.getElementById('mail');
 // Source for regular expression:
 // https://www.w3resource.com/javascript/form/email-validation.php
@@ -55,7 +54,7 @@ FOCUS ON NAME FIELD WHEN PAGE LOADS
 ==================================*/
 
 const focusOnNameField = () => {
-  nameField.focus();
+  name.focus();
 }
 
 /*===================================================
@@ -190,7 +189,6 @@ const activityTotalCost = (checkedList) => {
   let total = 0;
 
   for (let i = 0; i < checkedList.length; i++) {
-    console.log(checkedList[i].children[1].textContent);
 
     if (checkedList[i].children[0].checked) {
       total += parseInt(checkedList[i].children[1].textContent);
@@ -206,26 +204,15 @@ CREATE TOTAL COST ELEMENT FUNCTION
 
 const createTotalCostElement = (cost) => {
 
-  if (totalCostDiv === null) {
-    // append elements
+  if (cost === 0) {
+    activityFieldSet.removeChild(divTotal);
+  } else {
     activityFieldSet.appendChild(divTotal);
+    divTotal.setAttribute('id', 'total-cost');
     divTotal.appendChild(h3);
     h3.textContent = `Total: $${cost}`;
-  } else if (totalCostDiv !== null) {
-    h3.textContent = `Total: $${cost}`;
-    totalCostDiv.style.display = '';
   }
 
-}
-
-/*==================================
-REMOVE TOTAL COST ELEMENT FUNCTION
-==================================*/
-
-const removeTotalCostElement = () => {
-  if (totalCostDiv !== null) {
-    totalCostDiv.style.display = 'none';
-  }
 }
 
 /*==================================
@@ -316,8 +303,11 @@ REMOVE ERROR MESSAGE FUNCTION
 
 const removeErrorMessage = (parent, id) => {
   const element = document.getElementById(id);
+  console.log(element);
   if (element !== null) {
     parent.firstElementChild.remove();
+  } else if (element === null) {
+    parent.removeChild(id);
   }
 }
 
@@ -336,6 +326,8 @@ const validateName = () => {
     name.previousElementSibling.classList.remove('validation-text');
     return true;
   }
+
+
 }
 
 /*==================================
@@ -399,22 +391,39 @@ VALIDATES FORM FUNCTION
 const validate = () => {
 
   let flag;
+
   // validate name field
   if (validateName() === false) {
     name.previousElementSibling.textContent = 'Name: Please enter your name';
     flag = false;
+  } else if (validateName()) {
+    name.previousElementSibling.textContent = "Name:";
+    flag = true;
   }
+
   // validate email field
   if (validateEmail() === false) {
     email.previousElementSibling.textContent = 'Email: Please enter a valid email';
     flag = false;
+  } else if (validateEmail()) {
+    email.previousElementSibling.textContent = 'Email:';
+    flag = true;
   }
+
   // validate t-shirts for design selected
   if (validateShirtDesign() === false) {
     createErrorMessage(shirtFieldSet, pShirtError, "Don't forget your T-shirt!", 'shirt-error');
   } else if (validateShirtDesign() === true) {
     removeErrorMessage(shirtFieldSet.firstElementChild, 'shirt-error');
   }
+
+  // validate registry section
+  if (validateRegistry() === false) {
+    createErrorMessage(activityFieldSet, pRegError, "Please select atleast one event", 'reg-error')
+  } else if (validateRegistry() === true) {
+    removeErrorMessage(activityFieldSet.firstElementChild, 'reg-error');
+  }
+
 
   return flag;
 }
@@ -438,6 +447,8 @@ const initialPageLoad = () => {
 
   // initial call to displayPaymentOption for setup
   displayPaymentOption();
+
+  validate();
 }
 
 /*======================================
@@ -449,6 +460,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // initialize page
   initialPageLoad();
 
+  //check if user is entering a name, if valid, remove error message
+  name.addEventListener('input', () => {
+    validateName();
+    validate();
+  });
+
+  // check if user is entering a valid email, if so, remove error message
+  mail.addEventListener('input', () => {
+    validateEmail();
+    validate();
+  });
+
   // create textarea if option other is selected for job role
   selectJobRole.addEventListener('change', () => {
     jobRoleOptionSelected(selectJobRole.value);
@@ -458,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   selectShirtDesign.addEventListener('change', () => {
     isShirtDesignChosen();
     displayColorsBasedOnDesign(selectShirtDesign.value);
+    // check if user selects option, if so, remove error message
     if (isShirtDesignChosen()) {
       removeErrorMessage(shirtFieldSet.firstElementChild, 'shirt-error');
     }
@@ -465,10 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // listen for activites checked in Register Activities Section
   activityFieldSet.addEventListener('change', () => {
-    removeErrorMessage();
-    removeTotalCostElement();
     createTotalCostElement(activityTotalCost(activities));
     doEventsConflict();
+    // check if user selects option, if so, remove error message
+    removeErrorMessage(activityFieldSet.firstElementChild, 'reg-error');
   });
 
   // listen to payment section for option selected
