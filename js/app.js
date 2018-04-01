@@ -21,6 +21,12 @@ const express = document.querySelector('.activities > label > input[name="expres
 const jsLibs = document.querySelector('.activities > label> input[name="js-libs"]');
 const node = document.querySelector('.activities > label> input[name="node"]');
 
+// payment section variables
+const creditCard = document.getElementById('credit-card');
+const paypal = document.getElementById('paypal');
+const bitcoin = document.getElementById('bitcoin');
+const paymentOption = document.getElementById('payment');
+
 
 
 
@@ -202,7 +208,7 @@ CHECK INPUT NAMES FUNCTION
 
 const checkInputNames = (name, counterpart) => {
 
-  // check if input named checked conflicts with counterpart
+  // check if input name checked conflicts with counterpart
   if (name.checked) {
     counterpart.disabled = true;
     counterpart.parentNode.classList.add('disabled');
@@ -233,6 +239,34 @@ const doEventsConflict = () => {
 
 }
 
+/*===============================================
+*** PAYMENT SECTION FUNCTIONS ***
+===============================================*/
+
+/*==================================
+DISPLAY PAYMENT OPTION FUNCTION
+==================================*/
+
+const displayPaymentOption = () => {
+  if (paymentOption.value === 'credit card') {
+    paypal.style.display = 'none';
+    bitcoin.style.display = 'none';
+    creditCard.style.display = '';
+  } else if (paymentOption.value === 'paypal') {
+    paypal.style.display = '';
+    bitcoin.style.display = 'none';
+    creditCard.style.display = 'none';
+  } else if (paymentOption.value === 'bitcoin') {
+    paypal.style.display = 'none';
+    bitcoin.style.display = '';
+    creditCard.style.display = 'none';
+  } else {
+    paymentOption.value = 'credit card';
+    paypal.style.display = 'none';
+    bitcoin.style.display = 'none';
+    creditCard.style.display = '';
+  }
+}
 
 /*===============================================
 *** DOMCONTENTLOADED CHECKED CALL FUNCTIONS ***
@@ -261,6 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
     removeTotalCostElement();
     createTotalCostElement(activityTotalCost(activities));
     doEventsConflict();
+  });
+
+  // initial call to displayPaymentOption for setup
+  displayPaymentOption();
+  // listen to payment section for option selected
+  paymentOption.addEventListener('change', () => {
+    displayPaymentOption();
   });
 
 
