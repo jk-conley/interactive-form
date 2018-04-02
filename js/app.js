@@ -30,6 +30,9 @@ const creditCard = document.getElementById('credit-card');
 const paypal = document.getElementById('paypal');
 const bitcoin = document.getElementById('bitcoin');
 const paymentOption = document.getElementById('payment');
+const creditCardNum = document.getElementById('cc-num');
+const zip = document.getElementById('zip');
+const cvv = document.getElementById('cvv');
 
 // validation variables
 const form = document.querySelector('form');
@@ -37,9 +40,9 @@ const email = document.getElementById('mail');
 // Source for regular expression:
 // https://www.w3resource.com/javascript/form/email-validation.php
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const pRegError = document.createElement('p');
-const pShirtError = document.createElement('p');
-const pPaymentError = document.createElement('p');
+const pShirt = document.createElement('p');
+const pReg = document.createElement('p');
+const numCheck = /^\d+$/;
 
 
 
@@ -290,25 +293,41 @@ CREATE ERROR MESSAGE FUNCTION
 ==================================*/
 
 const createErrorMessage = (element, p, message, id) => {
+
   element.firstElementChild.append(p);
   p.textContent = message;
   p.setAttribute('class', 'validation-text');
   p.setAttribute('id', id);
   p.style.fontSize = '1rem';
+  p.style.display = 'none';
 }
 
 /*==================================
-REMOVE ERROR MESSAGE FUNCTION
+HIDE ERROR MESSAGE FUNCTION
 ==================================*/
 
-const removeErrorMessage = (parent, id) => {
-  const element = document.getElementById(id);
-  console.log(element);
-  if (element !== null) {
-    parent.firstElementChild.remove();
-  } else if (element === null) {
-    parent.removeChild(id);
+const hideErrorMessage = (paragraph) => {
+
+  if (paragraph === null) {
+    console.log(paragraph);
+  } else {
+    paragraph.style.display = 'none';
   }
+
+}
+
+/*==================================
+SHOW ERROR MESSAGE FUNCTION
+==================================*/
+
+const showErrorMessage = (paragraph) => {
+
+  if (paragraph === null) {
+    console.log(paragraph);
+  } else {
+    paragraph.style.display = '';
+  }
+
 }
 
 /*==================================
@@ -337,8 +356,6 @@ VALIDATE EMAIL FUNCTION
 const validateEmail = () => {
   // if no email or email is invalid set validation
   // css classes and return false
-  console.log(mail.value);
-  console.log(emailRegex.test(mail.value));
   if (mail.value === '' || !emailRegex.test(mail.value)) {
     email.classList.add('validation-box');
     email.previousElementSibling.classList.add('validation-text');
@@ -371,18 +388,101 @@ VALIDATE REGISTRY FUNCTION
 
 const validateRegistry = () => {
 
+  let flag = false;
+
   for (var i = 0; i < activities.length; i++) {
     if (activities[i].children[0].checked) {
-      return true;
-    } else {
-      return false;
+      flag = true;
     }
   }
 
+  console.log(flag);
+
+  return flag;
+
 }
 
+/*==================================
+*** VALIDATE PAYMENT FUNCTIONS ***
+==================================*/
 
+/*==================================
+VALIDATE CREDIT CARD FUNCTION
+==================================*/
 
+const validateCreditCard = () => {
+
+  let flag = false;
+
+  // if payment is credit card
+  if (paymentOption.value === 'credit card') {
+    // if card number is number only and between 13 and 16 digits
+    if (numCheck.test(creditCardNum.value) && (creditCardNum.value.length >= 13 && creditCardNum.value.length <= 16)) {
+      creditCardNum.classList.remove('validation-box');
+      creditCardNum.previousElementSibling.classList.remove('validation-text');
+      flag = true;
+    } else {
+      creditCardNum.classList.add('validation-box');
+      creditCardNum.previousElementSibling.classList.add('validation-text');
+      flag = false;
+    }
+  }
+
+  return flag;
+
+}
+
+/*==================================
+VALIDATE ZIP FUNCTION
+==================================*/
+
+const validateZip = () => {
+
+  let flag = false;
+
+  // if payment is credit card
+  if (paymentOption.value === 'credit card') {
+    // if zip is number only and is 5 digits
+    if (numCheck.test(zip.value) && zip.value.length === 5) {
+      zip.classList.remove('validation-box');
+      zip.previousElementSibling.classList.remove('validation-text');
+      flag = true;
+    } else {
+      zip.classList.add('validation-box');
+      zip.previousElementSibling.classList.add('validation-text');
+      flag = false;
+    }
+  }
+
+  return flag;
+
+}
+
+/*==================================
+VALIDATE CVV FUNCTION
+==================================*/
+
+const validateCvv = () => {
+
+  let flag = false;
+
+  // if payment is credit card
+  if (paymentOption.value === 'credit card') {
+    // if zip is number only and is 5 digits
+    if (numCheck.test(cvv.value) && cvv.value.length === 3) {
+      cvv.classList.remove('validation-box');
+      cvv.previousElementSibling.classList.remove('validation-text');
+      flag = true;
+    } else {
+      cvv.classList.add('validation-box');
+      cvv.previousElementSibling.classList.add('validation-text');
+      flag = false;
+    }
+  }
+
+  return flag;
+
+}
 
 /*==================================
 VALIDATES FORM FUNCTION
@@ -390,7 +490,7 @@ VALIDATES FORM FUNCTION
 
 const validate = () => {
 
-  let flag;
+  let flag = true;
 
   // validate name field
   if (validateName() === false) {
@@ -398,7 +498,6 @@ const validate = () => {
     flag = false;
   } else if (validateName()) {
     name.previousElementSibling.textContent = "Name:";
-    flag = true;
   }
 
   // validate email field
@@ -407,25 +506,69 @@ const validate = () => {
     flag = false;
   } else if (validateEmail()) {
     email.previousElementSibling.textContent = 'Email:';
-    flag = true;
   }
 
   // validate t-shirts for design selected
+  const shirtErrorMsg = document.getElementById('shirt-error');
+
   if (validateShirtDesign() === false) {
-    createErrorMessage(shirtFieldSet, pShirtError, "Don't forget your T-shirt!", 'shirt-error');
-  } else if (validateShirtDesign() === true) {
-    removeErrorMessage(shirtFieldSet.firstElementChild, 'shirt-error');
+    showErrorMessage(shirtErrorMsg);
+    flag = false;
+  } else {
+    hideErrorMessage(shirtErrorMsg);
   }
 
   // validate registry section
-  if (validateRegistry() === false) {
-    createErrorMessage(activityFieldSet, pRegError, "Please select atleast one event", 'reg-error')
-  } else if (validateRegistry() === true) {
-    removeErrorMessage(activityFieldSet.firstElementChild, 'reg-error');
+  const regErrorMsg = document.getElementById('reg-error');
+
+  if (validateRegistry() === true) {
+    hideErrorMessage(regErrorMsg);
+  } else {
+    showErrorMessage(regErrorMsg);
+    flag = false;
   }
 
+  // validate credit card
+  if (validateCreditCard() === false) {
+    if (creditCardNum.value.length < 13 || creditCardNum.value.length > 16) {
+      creditCardNum.previousElementSibling.textContent = 'Card Number: Please enter between 13 and 16 digits';
+    }
+    if (!numCheck.test(creditCardNum.value)) {
+      creditCardNum.previousElementSibling.textContent = 'Card Number: Please enter numbers only';
+    }
+    flag = false;
+  } else if (validateCreditCard()) {
+    creditCardNum.previousElementSibling.textContent = "Card Number:";
+  }
+
+  // validate zipcode
+  if (validateZip() === false) {
+    if (zip.value.length < 5 || zip.value.length > 5) {
+      zip.previousElementSibling.textContent = 'Zip Code: Please enter 5 digits';
+    }
+    if (!numCheck.test(zip.value)) {
+      zip.previousElementSibling.textContent = 'Zip Code: Please enter numbers only';
+    }
+    flag = false;
+  } else if (validateZip()) {
+    zip.previousElementSibling.textContent = "Zip Code:";
+  }
+
+  // validate cvv
+  if (validateCvv() === false) {
+    if (cvv.value.length < 3 || cvv.value.length > 3) {
+      cvv.previousElementSibling.textContent = 'CVV: Please enter 3 digits';
+    }
+    if (!numCheck.test(cvv.value)) {
+      cvv.previousElementSibling.textContent = 'CVV: Please enter numbers only';
+    }
+    flag = false;
+  } else if (validateCvv()) {
+    cvv.previousElementSibling.textContent = "CVV:";
+  }
 
   return flag;
+
 }
 /*===============================================
 *** CALL FUNCTIONS AND DOMCONTENTLOADED ***
@@ -445,9 +588,18 @@ const initialPageLoad = () => {
   // hide colors until design is chosen
   isShirtDesignChosen();
 
+  // create the shirt error element
+  createErrorMessage(shirtFieldSet, pShirt, "Don't forget your T-shirt!", 'shirt-error');
+
+
+  // create the registry error element
+  createErrorMessage(activityFieldSet, pReg, "Please select atleast one event", 'reg-error');
+
+
   // initial call to displayPaymentOption for setup
   displayPaymentOption();
 
+  // error msg shows until user input validates
   validate();
 }
 
@@ -481,18 +633,17 @@ document.addEventListener('DOMContentLoaded', () => {
   selectShirtDesign.addEventListener('change', () => {
     isShirtDesignChosen();
     displayColorsBasedOnDesign(selectShirtDesign.value);
-    // check if user selects option, if so, remove error message
-    if (isShirtDesignChosen()) {
-      removeErrorMessage(shirtFieldSet.firstElementChild, 'shirt-error');
-    }
+    validate();
   });
 
   // listen for activites checked in Register Activities Section
-  activityFieldSet.addEventListener('change', () => {
+  activityFieldSet.addEventListener('change', (e) => {
     createTotalCostElement(activityTotalCost(activities));
     doEventsConflict();
     // check if user selects option, if so, remove error message
-    removeErrorMessage(activityFieldSet.firstElementChild, 'reg-error');
+    console.log(e.target);
+    validate();
+
   });
 
   // listen to payment section for option selected
@@ -500,8 +651,27 @@ document.addEventListener('DOMContentLoaded', () => {
     displayPaymentOption();
   });
 
+  // check if user is entering a valid credit card number
+  creditCardNum.addEventListener('input', () => {
+    validateCreditCard();
+    validate();
+  });
+
+  // check if user is entering valid zipcode numbers
+  zip.addEventListener('input', () => {
+    validateZip();
+    validate();
+  });
+
+  // check if user is entering valid cvv numbers
+  cvv.addEventListener('input', () => {
+    validateCvv();
+    validate();
+  });
+
   // listen for form submition for validation check
   form.addEventListener('submit', (e) =>{
+    console.log(validate());
     if (validate() === false) {
       e.preventDefault();
     }
