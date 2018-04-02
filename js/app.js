@@ -82,7 +82,12 @@ const jobRoleOptionSelected = (option) => {
 *** T-SHIRT INFO FUNCTIONS ***
 ===================================================*/
 
+/*==================================
+CHECK IF A SHIRT DESIGN IS CHOSEN
+==================================*/
+
 const isShirtDesignChosen = () => {
+  // if either design is chosen display it and return true
   if (selectShirtDesign.value === 'js puns' || selectShirtDesign.value === 'heart js') {
     selectColors.style.display = '';
     return true;
@@ -92,9 +97,9 @@ const isShirtDesignChosen = () => {
   }
 }
 
-/*==================================
-JS PUNS COLORS FUCNTION
-==================================*/
+/*======================================
+JS PUNS COLORS ARE SELECTED FOR DISPLAY
+======================================*/
 
 const jsPunsColors = (colors) => {
 
@@ -103,6 +108,7 @@ const jsPunsColors = (colors) => {
   for (let i = 0; i < colors.length; i++) {
     switch (colors[i].value) {
       case 'cornflowerblue':
+      // set this color to display in the color select field
         colors[i].style.display = '';
         colors.value = colors[i].value;
         break;
@@ -126,9 +132,9 @@ const jsPunsColors = (colors) => {
 
 }
 
-/*==================================
-HEART JS COLORS FUNCTION
-==================================*/
+/*=====================================
+HEART JS COLORS SELECTED FOR DISPLAY
+=====================================*/
 
 const heartJsColors = (colors) => {
 
@@ -146,6 +152,7 @@ const heartJsColors = (colors) => {
         colors[i].style.display = 'none';
         break;
       case 'tomato':
+      // set this color to display in the color select field
         colors[i].style.display = '';
         colors.value = colors[i].value;
         break;
@@ -160,9 +167,9 @@ const heartJsColors = (colors) => {
 
 }
 
-/*==================================
-DISPLAY COLORS FUNCTION
-==================================*/
+/*=====================================
+CHOOSE WHICH DISPLAY COLORS FOR DESIGN
+=====================================*/
 
 const displayColorsBasedOnDesign = (designOption) => {
 
@@ -183,16 +190,16 @@ const displayColorsBasedOnDesign = (designOption) => {
 *** REGISTER ACTIVITY FUNCTIONS ***
 ===============================================*/
 
-/*==================================
-TOTAL COST FUNCTION
-==================================*/
+/*==========================================
+GET THE TOTAL COST FROM EACH EVENT CHECKED
+==========================================*/
 
 const activityTotalCost = (checkedList) => {
 
   let total = 0;
 
   for (let i = 0; i < checkedList.length; i++) {
-
+    // if event is checked add it to total
     if (checkedList[i].children[0].checked) {
       total += parseInt(checkedList[i].children[1].textContent);
     }
@@ -201,15 +208,17 @@ const activityTotalCost = (checkedList) => {
   return total;
 }
 
-/*==================================
-CREATE TOTAL COST ELEMENT FUNCTION
-==================================*/
+/*==============================================
+CREATE TOTAL COST ELEMENT TO DISPLAY TOTAL COST
+==============================================*/
 
 const createTotalCostElement = (cost) => {
 
+  // if cost is nada then remove it
   if (cost === 0) {
     activityFieldSet.removeChild(divTotal);
   } else {
+    // display total cost
     activityFieldSet.appendChild(divTotal);
     divTotal.setAttribute('id', 'total-cost');
     divTotal.appendChild(h3);
@@ -219,7 +228,7 @@ const createTotalCostElement = (cost) => {
 }
 
 /*==================================
-CHECK INPUT NAMES FUNCTION
+CHECK INPUT NAMES FOR CONFLICTS
 ==================================*/
 
 const checkInputNames = (name, counterpart) => {
@@ -236,7 +245,7 @@ const checkInputNames = (name, counterpart) => {
 }
 
 /*==================================
-DO EVENTS CONFLICT FUNCTION
+CHECKS IF EVENTS DO CONFLICT
 ==================================*/
 
 const doEventsConflict = () => {
@@ -259,24 +268,28 @@ const doEventsConflict = () => {
 *** PAYMENT SECTION FUNCTIONS ***
 ===============================================*/
 
-/*==================================
-DISPLAY PAYMENT OPTION FUNCTION
-==================================*/
+/*=========================================
+DISPLAY PAYMENT OPTION BASED ON SELECTION
+=========================================*/
 
 const displayPaymentOption = () => {
+  // display credit card
   if (paymentOption.value === 'credit card') {
     paypal.style.display = 'none';
     bitcoin.style.display = 'none';
     creditCard.style.display = '';
   } else if (paymentOption.value === 'paypal') {
+    // display paypal
     paypal.style.display = '';
     bitcoin.style.display = 'none';
     creditCard.style.display = 'none';
   } else if (paymentOption.value === 'bitcoin') {
+    // display bitcoin
     paypal.style.display = 'none';
     bitcoin.style.display = '';
     creditCard.style.display = 'none';
   } else {
+    // credit card is default selection
     paymentOption.value = 'credit card';
     paypal.style.display = 'none';
     bitcoin.style.display = 'none';
@@ -288,12 +301,13 @@ const displayPaymentOption = () => {
 *** VALIDATION FUNCTIONS ***
 ===============================================*/
 
-/*==================================
-CREATE ERROR MESSAGE FUNCTION
-==================================*/
+/*==========================================================
+CREATE ERROR MESSAGE USED FOR T-SHIRT AND REGISTRY SECTION
+==========================================================*/
 
 const createErrorMessage = (element, p, message, id) => {
 
+  // append to legend
   element.firstElementChild.append(p);
   p.textContent = message;
   p.setAttribute('class', 'validation-text');
@@ -302,9 +316,9 @@ const createErrorMessage = (element, p, message, id) => {
   p.style.display = 'none';
 }
 
-/*==================================
-HIDE ERROR MESSAGE FUNCTION
-==================================*/
+/*=======================
+HIDE ERROR MESSAGE
+=======================*/
 
 const hideErrorMessage = (paragraph) => {
 
@@ -316,9 +330,9 @@ const hideErrorMessage = (paragraph) => {
 
 }
 
-/*==================================
-SHOW ERROR MESSAGE FUNCTION
-==================================*/
+/*=======================
+SHOW ERROR MESSAGE
+=======================*/
 
 const showErrorMessage = (paragraph) => {
 
@@ -330,12 +344,12 @@ const showErrorMessage = (paragraph) => {
 
 }
 
-/*==================================
-ERROR ELEMENT FUNCTION
-==================================*/
+/*==========================================
+ERROR ELEMENT ADDS RED AROUND INVALID FIELD
+==========================================*/
 
 const errorElement = (element) => {
-
+    // add error classes and if present remove success classes
     element.classList.add('validation-box');
     element.previousElementSibling.classList.add('validation-text');
     element.classList.remove('success-box');
@@ -344,12 +358,12 @@ const errorElement = (element) => {
 
 }
 
-/*==================================
-SUCCESS ELEMENT FUNCTION
-==================================*/
+/*================================================
+SUCCESS ELEMENT ADDED WHEN USER ENTERS VALID INFO
+================================================*/
 
 const successElement = (element) => {
-
+  // add success classes and if present remove error classes
   element.classList.remove('validation-box');
   element.previousElementSibling.classList.remove('validation-text');
   element.classList.add('success-box');
@@ -358,7 +372,7 @@ const successElement = (element) => {
 }
 
 /*==================================
-VALIDATE NAME FUNCTION
+VALIDATE NAME FIELD
 ==================================*/
 
 const validateName = () => {
@@ -372,7 +386,7 @@ const validateName = () => {
 }
 
 /*==================================
-VALIDATE EMAIL FUNCTION
+VALIDATE EMAIL FIELD
 ==================================*/
 
 const validateEmail = () => {
@@ -387,7 +401,7 @@ const validateEmail = () => {
 }
 
 /*==================================
-VALIDATE SHIRT DESIGN FUNCTION
+VALIDATE SHIRT DESIGN FIELD
 ==================================*/
 
 const validateShirtDesign = () => {
@@ -401,20 +415,19 @@ const validateShirtDesign = () => {
 }
 
 /*==================================
-VALIDATE REGISTRY FUNCTION
+VALIDATE REGISTRY FIELD
 ==================================*/
 
 const validateRegistry = () => {
 
   let flag = false;
 
+  // check if any checkboxes are checked
   for (var i = 0; i < activities.length; i++) {
     if (activities[i].children[0].checked) {
       flag = true;
     }
   }
-
-  console.log(flag);
 
   return flag;
 
@@ -425,7 +438,7 @@ const validateRegistry = () => {
 ==================================*/
 
 /*==================================
-VALIDATE CREDIT CARD FUNCTION
+VALIDATE CREDIT CARD FIELD
 ==================================*/
 
 const validateCreditCard = () => {
@@ -443,7 +456,7 @@ const validateCreditCard = () => {
 }
 
 /*==================================
-VALIDATE ZIP FUNCTION
+VALIDATE ZIP FIELD
 ==================================*/
 
 const validateZip = () => {
@@ -461,14 +474,14 @@ const validateZip = () => {
 }
 
 /*==================================
-VALIDATE CVV FUNCTION
+VALIDATE CVV FIELD
 ==================================*/
 
 const validateCvv = () => {
 
   // if payment is credit card
   if (paymentOption.value === 'credit card') {
-    // if zip is number only and is 5 digits
+    // if cvv is number only and is 3 digits
     if (numCheck.test(cvv.value) && cvv.value.length === 3) {
       return successElement(cvv);
     } else {
@@ -479,26 +492,29 @@ const validateCvv = () => {
 }
 
 /*==================================
-VALIDATES FORM FUNCTION
+VALIDATES ENTIRE FORM FIELD
 ==================================*/
 
 const validate = () => {
 
   let flag = true;
 
-  // validate name field
+  // validate name field and set appropriate msg
   if (validateName() === false) {
+    // select label
     name.previousElementSibling.textContent = 'Name: Please enter your name';
     flag = false;
   } else if (validateName()) {
     name.previousElementSibling.textContent = "Name ✅";
   }
 
-  // validate email field
+  // validate email field and set appropriate msg
   if (validateEmail() === false) {
+    // if email is empty
     if (email.value === '') {
       email.previousElementSibling.textContent = 'Email: Please enter a valid email';
     }
+    // if email has input but is not valid yet
     if (email.value !== '') {
       email.previousElementSibling.textContent = 'Email: Valid entry johndoe@email.com';
     }
@@ -507,7 +523,8 @@ const validate = () => {
     email.previousElementSibling.textContent = 'Email ✅';
   }
 
-  // validate t-shirts for design selected
+  // validate t-shirts for design selected and set appropriate msg
+  // select the error msg
   const shirtErrorMsg = document.getElementById('shirt-error');
 
   if (validateShirtDesign() === false) {
@@ -517,7 +534,8 @@ const validate = () => {
     hideErrorMessage(shirtErrorMsg);
   }
 
-  // validate registry section
+  // validate registry section set appropriate msg
+  // select the error msg
   const regErrorMsg = document.getElementById('reg-error');
 
   if (validateRegistry() === true) {
@@ -527,11 +545,13 @@ const validate = () => {
     flag = false;
   }
 
-  // validate credit card
+  // validate credit card set appropriate msg
   if (validateCreditCard() === false) {
+    // check length
     if (creditCardNum.value.length < 13 || creditCardNum.value.length > 16) {
       creditCardNum.previousElementSibling.textContent = 'Card Number: Please enter between 13 and 16 digits';
     }
+    // check if any input is not a num
     if (!numCheck.test(creditCardNum.value)) {
       creditCardNum.previousElementSibling.textContent = 'Card Number: Please enter numbers only';
     }
@@ -540,11 +560,13 @@ const validate = () => {
     creditCardNum.previousElementSibling.textContent = "Card Number ✅";
   }
 
-  // validate zipcode
+  // validate zipcode set appropriate msg
   if (validateZip() === false) {
+    // check length
     if (zip.value.length < 5 || zip.value.length > 5) {
       zip.previousElementSibling.textContent = 'Zip Code: Please enter 5 digits';
     }
+    // check if all input is num
     if (!numCheck.test(zip.value)) {
       zip.previousElementSibling.textContent = 'Zip Code: Please enter numbers only';
     }
@@ -553,11 +575,13 @@ const validate = () => {
     zip.previousElementSibling.textContent = "Zip Code ✅";
   }
 
-  // validate cvv
+  // validate cvv set appropriate msg
   if (validateCvv() === false) {
+    // check length
     if (cvv.value.length < 3 || cvv.value.length > 3) {
       cvv.previousElementSibling.textContent = 'CVV: Please enter 3 digits';
     }
+    // chekc if all num
     if (!numCheck.test(cvv.value)) {
       cvv.previousElementSibling.textContent = 'CVV: Please enter numbers only';
     }
@@ -566,6 +590,7 @@ const validate = () => {
     cvv.previousElementSibling.textContent = "CVV ✅";
   }
 
+  // return true if nothing is invalid else return false
   return flag;
 
 }
@@ -574,7 +599,7 @@ const validate = () => {
 ===============================================*/
 
 /*==================================
-INITIALIZE ON PAGE LOAD FUNCTION
+INITIALIZE ON PAGE LOAD
 ==================================*/
 
 const initialPageLoad = () => {
@@ -590,10 +615,8 @@ const initialPageLoad = () => {
   // create the shirt error element
   createErrorMessage(shirtFieldSet, pShirt, "Don't forget your T-shirt!", 'shirt-error');
 
-
   // create the registry error element
   createErrorMessage(activityFieldSet, pReg, "Please select atleast one event", 'reg-error');
-
 
   // initial call to displayPaymentOption for setup
   displayPaymentOption();
@@ -602,9 +625,9 @@ const initialPageLoad = () => {
   validate();
 }
 
-/*======================================
-DOMCONTENTLOADED CHECK RUN FUNCTIONS
-======================================*/
+/*=========================================
+DOMCONTENTLOADED CHECK AND CALL FUNCTIONS
+=========================================*/
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -640,7 +663,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createTotalCostElement(activityTotalCost(activities));
     doEventsConflict();
     // check if user selects option, if so, remove error message
-    console.log(e.target);
     validate();
 
   });
@@ -675,6 +697,5 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
     }
   });
-
 
 });
