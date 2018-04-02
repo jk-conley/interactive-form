@@ -516,7 +516,7 @@ const validate = () => {
     }
     // if email has input but is not valid yet
     if (email.value !== '') {
-      email.previousElementSibling.textContent = 'Email: Valid entry johndoe@email.com';
+      email.previousElementSibling.textContent = 'Email: Valid email example johndoe@email.com';
     }
     flag = false;
   } else if (validateEmail()) {
