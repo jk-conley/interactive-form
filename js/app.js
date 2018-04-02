@@ -331,21 +331,43 @@ const showErrorMessage = (paragraph) => {
 }
 
 /*==================================
+ERROR ELEMENT FUNCTION
+==================================*/
+
+const errorElement = (element) => {
+
+    element.classList.add('validation-box');
+    element.previousElementSibling.classList.add('validation-text');
+    element.classList.remove('success-box');
+    element.previousElementSibling.classList.remove('success-text');
+    return false;
+
+}
+
+/*==================================
+SUCCESS ELEMENT FUNCTION
+==================================*/
+
+const successElement = (element) => {
+
+  element.classList.remove('validation-box');
+  element.previousElementSibling.classList.remove('validation-text');
+  element.classList.add('success-box');
+  element.previousElementSibling.classList.add('success-text');
+  return true;
+}
+
+/*==================================
 VALIDATE NAME FUNCTION
 ==================================*/
 
 const validateName = () => {
   // if name invalid set validation css classses and return false
   if (name.value === '') {
-    name.classList.add('validation-box');
-    name.previousElementSibling.classList.add('validation-text');
-    return false;
+    return errorElement(name);
   } else {
-    name.classList.remove('validation-box');
-    name.previousElementSibling.classList.remove('validation-text');
-    return true;
+    return successElement(name);
   }
-
 
 }
 
@@ -357,13 +379,9 @@ const validateEmail = () => {
   // if no email or email is invalid set validation
   // css classes and return false
   if (mail.value === '' || !emailRegex.test(mail.value)) {
-    email.classList.add('validation-box');
-    email.previousElementSibling.classList.add('validation-text');
-    return false;
+    return errorElement(email);
   } else {
-    email.classList.remove('validation-box');
-    email.previousElementSibling.classList.remove('validation-text');
-    return true;
+    return successElement(email);
   }
 
 }
@@ -412,23 +430,15 @@ VALIDATE CREDIT CARD FUNCTION
 
 const validateCreditCard = () => {
 
-  let flag = false;
-
   // if payment is credit card
   if (paymentOption.value === 'credit card') {
     // if card number is number only and between 13 and 16 digits
     if (numCheck.test(creditCardNum.value) && (creditCardNum.value.length >= 13 && creditCardNum.value.length <= 16)) {
-      creditCardNum.classList.remove('validation-box');
-      creditCardNum.previousElementSibling.classList.remove('validation-text');
-      flag = true;
+      return successElement(creditCardNum);
     } else {
-      creditCardNum.classList.add('validation-box');
-      creditCardNum.previousElementSibling.classList.add('validation-text');
-      flag = false;
+      return errorElement(creditCardNum);
     }
   }
-
-  return flag;
 
 }
 
@@ -438,23 +448,15 @@ VALIDATE ZIP FUNCTION
 
 const validateZip = () => {
 
-  let flag = false;
-
   // if payment is credit card
   if (paymentOption.value === 'credit card') {
     // if zip is number only and is 5 digits
     if (numCheck.test(zip.value) && zip.value.length === 5) {
-      zip.classList.remove('validation-box');
-      zip.previousElementSibling.classList.remove('validation-text');
-      flag = true;
+      return successElement(zip);
     } else {
-      zip.classList.add('validation-box');
-      zip.previousElementSibling.classList.add('validation-text');
-      flag = false;
+      return errorElement(zip);
     }
   }
-
-  return flag;
 
 }
 
@@ -464,23 +466,15 @@ VALIDATE CVV FUNCTION
 
 const validateCvv = () => {
 
-  let flag = false;
-
   // if payment is credit card
   if (paymentOption.value === 'credit card') {
     // if zip is number only and is 5 digits
     if (numCheck.test(cvv.value) && cvv.value.length === 3) {
-      cvv.classList.remove('validation-box');
-      cvv.previousElementSibling.classList.remove('validation-text');
-      flag = true;
+      return successElement(cvv);
     } else {
-      cvv.classList.add('validation-box');
-      cvv.previousElementSibling.classList.add('validation-text');
-      flag = false;
+      return errorElement(cvv);
     }
   }
-
-  return flag;
 
 }
 
@@ -497,15 +491,20 @@ const validate = () => {
     name.previousElementSibling.textContent = 'Name: Please enter your name';
     flag = false;
   } else if (validateName()) {
-    name.previousElementSibling.textContent = "Name:";
+    name.previousElementSibling.textContent = "Name ✅";
   }
 
   // validate email field
   if (validateEmail() === false) {
-    email.previousElementSibling.textContent = 'Email: Please enter a valid email';
+    if (email.value === '') {
+      email.previousElementSibling.textContent = 'Email: Please enter a valid email';
+    }
+    if (email.value !== '') {
+      email.previousElementSibling.textContent = 'Email: Valid entry johndoe@email.com';
+    }
     flag = false;
   } else if (validateEmail()) {
-    email.previousElementSibling.textContent = 'Email:';
+    email.previousElementSibling.textContent = 'Email ✅';
   }
 
   // validate t-shirts for design selected
@@ -538,7 +537,7 @@ const validate = () => {
     }
     flag = false;
   } else if (validateCreditCard()) {
-    creditCardNum.previousElementSibling.textContent = "Card Number:";
+    creditCardNum.previousElementSibling.textContent = "Card Number ✅";
   }
 
   // validate zipcode
@@ -551,7 +550,7 @@ const validate = () => {
     }
     flag = false;
   } else if (validateZip()) {
-    zip.previousElementSibling.textContent = "Zip Code:";
+    zip.previousElementSibling.textContent = "Zip Code ✅";
   }
 
   // validate cvv
@@ -564,7 +563,7 @@ const validate = () => {
     }
     flag = false;
   } else if (validateCvv()) {
-    cvv.previousElementSibling.textContent = "CVV:";
+    cvv.previousElementSibling.textContent = "CVV ✅";
   }
 
   return flag;
