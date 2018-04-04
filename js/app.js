@@ -625,8 +625,6 @@ const initialPageLoad = () => {
   // initial call to displayPaymentOption for setup
   displayPaymentOption();
 
-  // error msg shows until user input validates
-  validate();
 }
 
 /*=========================================
@@ -640,8 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //check if user is entering a name, if valid, remove error message
   name.addEventListener('input', () => {
-    validateName();
-    validate();
+      validateName();
+      validate();
   });
 
   // check if user is entering a valid email, if so, remove error message
