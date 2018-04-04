@@ -52,6 +52,7 @@ const numCheck = /^\d+$/;
 
 
 
+
 /*======================
 *** ONLOAD FUNCTIONS ***
 ======================*/
@@ -694,7 +695,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // listen for form submition for validation check
   form.addEventListener('submit', (e) =>{
-    console.log(validate());
     if (validate() === false) {
       e.preventDefault();
     }
