@@ -1,1 +1,3 @@
-# interactive-form
+# Interactive Form
+
+This is the third project with javascript at treehouse. This section covered CSS selectors, HTML forms, exploring more on JS conditionals, CSS and HTML, and DOM scripting. I was tasked with using unobstusive js practices to add functionality to a form. I took the form and divided it into its respected sections. Then formulated the logic for each section. The validation was a challenge, and I got an extra google lesson in regular expressions, which made it easier to validate the email field. I was not allowed to use the html required funtionality but had to use JS exculsively. Using a live validation to track what the user was doing, was a part of my exceeds expectations challenge. It was a real challenge and gave me an opportunity to dive deeper into DOM events. 
