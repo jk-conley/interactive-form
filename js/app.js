@@ -113,7 +113,7 @@ const jsPunsColors = (colors) => {
   for (let i = 0; i < colors.length; i++) {
     switch (colors[i].value) {
       case 'cornflowerblue':
-      // set this color to display in the color select field
+        // set this color to display in the color select field
         colors[i].style.display = '';
         colors.value = colors[i].value;
         break;
@@ -157,7 +157,7 @@ const heartJsColors = (colors) => {
         colors[i].style.display = 'none';
         break;
       case 'tomato':
-      // set this color to display in the color select field
+        // set this color to display in the color select field
         colors[i].style.display = '';
         colors.value = colors[i].value;
         break;
@@ -354,12 +354,12 @@ ERROR ELEMENT ADDS RED AROUND INVALID FIELD
 ==========================================*/
 
 const errorElement = (element) => {
-    // add error classes and if present remove success classes
-    element.classList.add('validation-box');
-    element.previousElementSibling.classList.add('validation-text');
-    element.classList.remove('success-box');
-    element.previousElementSibling.classList.remove('success-text');
-    return false;
+  // add error classes and if present remove success classes
+  element.classList.add('validation-box');
+  element.previousElementSibling.classList.add('validation-text');
+  element.classList.remove('success-box');
+  element.previousElementSibling.classList.remove('success-text');
+  return false;
 
 }
 
@@ -639,8 +639,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //check if user is entering a name, if valid, remove error message
   name.addEventListener('input', () => {
-      validateName();
-      validate();
+    validateName();
+    validate();
   });
 
   // check if user is entering a valid email, if so, remove error message
@@ -694,9 +694,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // listen for form submition for validation check
-  form.addEventListener('submit', (e) =>{
+  form.addEventListener('submit', (e) => {
     if (validate() === false) {
       e.preventDefault();
+    } else {
+      window.location.reload(true);
     }
   });
 
