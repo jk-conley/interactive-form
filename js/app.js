@@ -697,8 +697,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', (e) => {
     if (validate() === false) {
       e.preventDefault();
-    } else {
-      form.reset();
     }
   });
 
