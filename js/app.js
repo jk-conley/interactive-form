@@ -698,7 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (validate() === false) {
       e.preventDefault();
     } else {
-      document.location.reload();
+      form.reset();
     }
   });
 
